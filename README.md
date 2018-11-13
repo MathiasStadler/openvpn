@@ -5,6 +5,9 @@
 ## sources
 
 ```txt
+# manpage openvpn 2.4
+https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+
 # install pivpn in german
 https://www.kuketz-blog.de/pivpn-raspberry-pi-mit-openvpn-raspberry-pi-teil3/
 
