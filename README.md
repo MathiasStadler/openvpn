@@ -231,21 +231,86 @@ port 80
 server 10.10.0.0 255.255.255.0
 ```
 
-| Hint used diff for check that you only change these parameter
-| ```bash
-| diff /etc/openvpn/server.conf /etc/openvpn/server2.conf
-|```
+- Hint used diff for check that you only change these parameter
 
+```bash
+diff /etc/openvpn/server.conf /etc/openvpn/server2.conf
+```
 
+## enable the all server instances
 
+```bash
+sudo systemctl enable openvpn@server.service
+sudo systemctl enable openvpn@server2.service
+sudo systemctl enable openvpn@server3.service
+```
 
+## start all server instances
 
+```bash
+sudo systemctl start openvpn@server.service
+sudo systemctl start openvpn@server2.service
+sudo systemctl start openvpn@server3.service
+```
 
+## stop all server instaces
 
+```bash
+sudo systemctl stop openvpn@server.service
+sudo systemctl stop openvpn@server2.service
+sudo systemctl stop openvpn@server3.service
+```
 
+## check all server instances are listen to the port
 
+```bash
+>ss -aontul4 |egrep '1194|80|443'
+udp    UNCONN     0      0         *:1194                  *:*
+tcp    LISTEN     0      1         *:443                   *:*
+tcp    LISTEN     0      1         *:80                    *:*
+```
 
+## see listen process on port
 
+```bash
+>ss -anotul4p |egrep '1194|80|443'
+udp    UNCONN     0      0         *:1194                  *:*                   users:(("openvpn",pid=18851,fd=6))
+tcp    LISTEN     0      1         *:443                   *:*                   users:(("openvpn",pid=18875,fd=6))
+tcp    LISTEN     0      1         *:80                    *:*                   users:(("openvpn",pid=19065,fd=6))
+```
 
+## prepare opnv profile files for different port
 
+- copy your OPVN profile file in your $HOME/ovpns for each server instance respectively for each port
+
+```bash
+cp $HOME/ovps/MyOpenVpn.ovpn $HOME/ovps/MyOpenVpnPort1194.ovpn
+cp $HOME/ovps/MyOpenVpn.ovpn $HOME/ovps/MyOpenVpnPort80.ovpn
+cp $HOME/ovps/MyOpenVpn.ovpn $HOME/ovps/MyOpenVpnPort443.ovpn
+```
+
+- edit your file PVN profile file $HOME/ovps/MyOpenVpnPort1194.ovpn
+
+  - NO CHANGE
+
+- change your file OPVN profile file $HOME/ovps/MyOpenVpnPort80.ovpn
+
+```bash
+# proto udp
+proto tcp
+#remote <YOUR DYNAMIC DNS NAME> 1194
+remote <YOUR DYNAMIC DNS NAME> 80
+
+```
+
+- change your file OPVN profile file $HOME/ovps/MyOpenVpnPort443.ovpn
+
+```bash
+# proto udp
+proto tcp
+#remote <YOUR DYNAMIC DNS NAME> 1194
+remote <YOUR DYNAMIC DNS NAME> 80
+```
+
+- copy to client and have connect over the port
 
