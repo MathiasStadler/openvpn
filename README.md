@@ -194,8 +194,50 @@ pivpn add
 # enable
 sudo systemctl enable openvpn@server.service
 #disable
-
+sudo systemctl disable openvpn@server.service
+# reenable after config change
+sudo systemctl reenable openvpn@server.service
 ```
+
+
+## create server.conf for port 80 and 443
+
+- copy /etc/openvpn/server.conf for each instance
+
+```bash
+cp /etc/openvpn/server.conf /etc/openvpn/server2.conf
+cp /etc/openvpn/server.conf /etc/openvpn/server3.conf
+```
+
+- edit port and port inside  /etc/openvpn/server2.conf to
+
+```bash
+# proto udp
+proto tcp
+# port 1194
+port 443
+#server 10.8.0.0 255.255.255.0
+server 10.9.0.0 255.255.255.0
+```
+
+- edit port and port inside  /etc/openvpn/server3.conf to
+
+```bash
+# proto udp
+proto tcp
+# port 1194
+port 80
+# server 10.8.0.0 255.255.255.0
+server 10.10.0.0 255.255.255.0
+```
+
+| Hint used diff for check that you only change these parameter
+| ```bash
+| diff /etc/openvpn/server.conf /etc/openvpn/server2.conf
+|```
+
+
+
 
 
 
