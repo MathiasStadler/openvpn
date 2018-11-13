@@ -1,5 +1,12 @@
 {
     "cSpell.words": [
-        "openvpn"
+        "Armbian",
+        "DHCP",
+        "Fritzbox",
+        "distro",
+        "nameservers",
+        "openvpn",
+        "pivpn",
+        "systemctl"
     ]
 }
