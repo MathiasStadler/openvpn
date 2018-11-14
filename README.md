@@ -314,3 +314,25 @@ remote <YOUR DYNAMIC DNS NAME> 80
 
 - copy to client and have connect over the port
 
+## enable daily reboot
+
+- for any reason that the openvpn would not more operated
+
+```bash
+sudo cat << EOF >/etc/cron.d/daily-reboot
+# The first element of the path is a directory where the debian-sa1
+# script is located
+PATH=/usr/lib/sysstat:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+
+
+# daily reboot
+59 23 * * * root /sbin/shutdown -Fr now
+EOF
+
+# activate /etc/cron.d
+sudo touch /etc/cron.d
+
+# display last reboot time
+last -x|grep shutdown | head -1
+
+```
