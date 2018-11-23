@@ -122,6 +122,34 @@ ping <dynamic dns name>
 dig +short <dynamic dns name>
 ```
 
+## install pivpn server
+
+```bash
+sudo curl -L https://install.pivpn.io | sudo bash
+```
+
+- follow all instruction
+- select always the preselect default
+- used dynamic dns and take the dns name from step below
+- select Elliptic Curve 538
+- used the dns that you like or just select default
+- your dns name is **WITHOUT** protocol prefix and port number :-)
+
+## which package installed openvpn ( maybe interesting)
+
+```bash
+# before you instal openvpn
+>dpkg -l | grep ^ii | sed 's/^[^ ]* *\([^ ]*\) *\([^ ]*\).*/\1_\2/'|sort > installed-packages_before_openvpn.txt
+# after you installed openvpn
+>dpkg -l | grep ^ii | sed 's/^[^ ]* *\([^ ]*\) *\([^ ]*\).*/\1_\2/'|sort > installed-packages_after_openvpn.txt
+# compare
+>diff -u installed-packages_before_openvpn.txt installed-packages_after_openvpn.txt|grep ^+
++iptables-persistent_1.0.4+nmu2
++libpkcs11-helper1:armhf_1.21-1
++netfilter-persistent_1.0.4+nmu2
++openvpn_2.4.0-6+deb9u2
+```
+
 ## enable port forwarding on your Fritzbox/router
 
 - enable filter port forwarding on your fritzbox/router for
@@ -157,31 +185,21 @@ COMMIT
 ```bash
 
 # reload
->iptables-restore </etc/iptables/rules.v4
+>sudo iptables-restore </etc/iptables/rules.v4
 # check
-> iptables -L -t nat
-> iptables -L -t filter
+> sudo iptables -L -t nat
+> sudo iptables -L -t filter
 
 ```
 
-## install pivpn server
-
-```bash
-curl -L https://install.pivpn.io | bash
-```
-
-- follow all instruction
-- used the dynamic dns name from step below
-- select Elliptic Curve
-
-## prepare pivpn client openvpn files
+## prepare pivpn client and create openvpn profile file
 
 ```bash
 pivpn add
 ```
 
 - follow the instruction
-- you will found the ovpn profile in your home directory
+- you will found the ovpn profile file in your home directory
 - copy this to your client and used that with your openvpn client of your choice
   - e.g. [OpenVpn for Android](https://play.google.com/store/apps/details?id=de.blinkt.openvpn)
 
@@ -309,7 +327,7 @@ remote <YOUR DYNAMIC DNS NAME> 80
 # proto udp
 proto tcp
 #remote <YOUR DYNAMIC DNS NAME> 1194
-remote <YOUR DYNAMIC DNS NAME> 80
+remote <YOUR DYNAMIC DNS NAME> 443
 ```
 
 - copy to client and have connect over the port
