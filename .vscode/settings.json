@@ -6,6 +6,7 @@
         "distro",
         "nameservers",
         "openvpn",
+        "ovpns",
         "pivpn",
         "reenable",
         "systemctl"
